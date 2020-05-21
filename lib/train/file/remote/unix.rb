@@ -23,7 +23,8 @@ module Train
           @exist ||= begin
             f = @follow_symlink ? "" : " || test -L #{@spath}"
             if @backend.run_command("uname -s").stdout.chomp == "SunOS"
-              # Solaris does not support `-e` flag:
+              # Solaris does not support `-e` flag in default `test`,
+              # so we specify by running /usr/bin/test:
               # https://github.com/inspec/train/issues/587
               @backend.run_command("/usr/bin/test -e #{@spath}" + f)
             else
